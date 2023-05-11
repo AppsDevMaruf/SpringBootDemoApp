@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Employee;
 import com.example.demo.repository.EmployeeRepository;
+import com.example.demo.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,22 +12,26 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/employees")
+@RequestMapping("api/v1/employee/")
 public class EmployeeController {
 
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private EmployeeService employeeService;
+
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
 
     //build create get All Employee Rest API
-    @GetMapping
-    private List<Employee> getAllEmployee() {
-        return employeeRepository.findAll();
+    @GetMapping("list")
+    private List<Employee> getAllEmployees() {
+        return employeeService.getAllEmployees();
     }
 
     //build create an Employee Rest API
-    @PostMapping
-    public Employee createEmployee(@RequestBody Employee employee) {
-        return employeeRepository.save(employee);
+    @PostMapping("add")
+    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
+        return new ResponseEntity<Employee>(employeeService.addEmployee(employee),HttpStatus.CREATED);
     }
 
     //build get Employee by id Rest API
@@ -39,10 +44,10 @@ public class EmployeeController {
     }
 
     //build update Employee Rest API
-    @PutMapping("{id}")
-    private ResponseEntity<Employee> updateEmployee(@PathVariable long id, @RequestBody Employee employee) {
-        Employee updateEmployee = employeeRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Employee not exit with id:" + id));
+   /* @PutMapping("update")
+    private ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee) {
+        Employee updateEmployee = employeeRepository.findById(employee.getId()).orElseThrow(
+                () -> new ResourceNotFoundException("Employee not exit with id:" + employee.getId()));
 
         updateEmployee.setFirstName(employee.getFirstName());
         updateEmployee.setLastName(employee.getLastName());
@@ -50,13 +55,13 @@ public class EmployeeController {
         employeeRepository.save(updateEmployee);
         return ResponseEntity.ok(updateEmployee);
 
-    }
+    }*/
     //build delete employee Rest API
-    @DeleteMapping("{id}")
-    private ResponseEntity<Employee> deleteEmployee(@PathVariable long id){
+    /*@DeleteMapping("{id}")
+    private ResponseEntity<String> deleteEmployee(@PathVariable long id){
         Employee deleteEmpId = employeeRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Employee not exit with id:" + id));
         employeeRepository.delete(deleteEmpId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+        return ResponseEntity.ok("delete Successfully");
+    }*/
 
 }
