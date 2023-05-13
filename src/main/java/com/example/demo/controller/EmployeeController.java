@@ -35,13 +35,13 @@ public class EmployeeController {
     }
 
     //build get Employee by id Rest API
-    @GetMapping("{id}")
+  /*  @GetMapping("{id}")
     public ResponseEntity<Employee> getEmployeeById(@PathVariable long id) {
         Employee employee = employeeRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Employee not exit with id: " + id));
         return ResponseEntity.ok(employee);
 
-    }
+    }*/
 
     //build update Employee Rest API
    /* @PutMapping("update")
