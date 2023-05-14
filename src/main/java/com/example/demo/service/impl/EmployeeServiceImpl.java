@@ -7,7 +7,6 @@ import com.example.demo.service.EmployeeService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -36,7 +35,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee updateEmployee(Employee employee, long employeeId) {
-        //we check employee is exist or not
+        //we check employee is existed or not
         Employee existingEmployee = employeeRepository.findById(employeeId).orElseThrow(() ->
                 new ResourceNotFoundException("Employee", "Id", employeeId));
         existingEmployee.setEmail(employee.getEmail());
@@ -49,9 +48,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee deleteEmployee(long employeeId) {
-        return employeeRepository.deleteById(employeeId);
+    public String deleteEmployee(long employeeId) {
+        //we check employee is existed or not
+        try {
+            Employee existingEmployee = employeeRepository.findById(employeeId).orElseThrow(() ->
+                    new ResourceNotFoundException("Employee", "Id", employeeId));
+            employeeRepository.deleteById(existingEmployee.getId());
 
+        }catch (Exception e){
+            return "Failed reason: "+e;
+        }
+        return "Failed";
     }
+
 
 }

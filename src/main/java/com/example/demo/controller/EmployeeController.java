@@ -1,5 +1,4 @@
 package com.example.demo.controller;
-
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Employee;
 import com.example.demo.repository.EmployeeRepository;
@@ -22,6 +21,7 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
+
     //build create get All Employee Rest API
     @GetMapping("list")
     private List<Employee> getAllEmployees() {
@@ -33,29 +33,28 @@ public class EmployeeController {
     @PostMapping("add")
     public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
 
-        return new ResponseEntity<Employee>(employeeService.addEmployee(employee),HttpStatus.CREATED);
+        return new ResponseEntity<Employee>(employeeService.addEmployee(employee), HttpStatus.CREATED);
     }
 
     //build get Employee by id Rest API
     @GetMapping("{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable("id")long employeeId) {
-        return new ResponseEntity<Employee>(employeeService.getEmployeeById(employeeId),HttpStatus.OK);
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") long employeeId) {
+        return new ResponseEntity<Employee>(employeeService.getEmployeeById(employeeId), HttpStatus.OK);
 
     }
 
     //build update Employee Rest API
     @PutMapping("update/{id}")
-    private ResponseEntity<Employee> updateEmployee(@PathVariable("id") long employeeId ,@RequestBody Employee employee) {
-        System.out.println("update");
-        return new ResponseEntity<Employee>(employeeService.updateEmployee(employee,employeeId),HttpStatus.OK);
+    private ResponseEntity<Employee> updateEmployee(@PathVariable("id") long employeeId, @RequestBody Employee employee) {
+        return new ResponseEntity<Employee>(employeeService.updateEmployee(employee, employeeId), HttpStatus.OK);
 
     }
-    //build delete employee Rest API
-    /*@DeleteMapping("{id}")
-    private ResponseEntity<String> deleteEmployee(@PathVariable long id){
-        Employee deleteEmpId = employeeRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Employee not exit with id:" + id));
-        employeeRepository.delete(deleteEmpId);
-        return ResponseEntity.ok("delete Successfully");
-    }*/
 
+    //build delete employee Rest API
+    @DeleteMapping("{id}")
+    private String deleteEmployee(@PathVariable("id") long employeeId) {
+
+        employeeService.deleteEmployee(employeeId);
+        return "";
+    }
 }

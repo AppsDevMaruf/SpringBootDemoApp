@@ -9,6 +9,6 @@ public interface EmployeeService {
     List<Employee> getAllEmployees();
     Employee getEmployeeById(long employeeId);
     Employee updateEmployee(Employee employee,long employeeId);
-    Employee deleteEmployee(long employeeId);
+    String deleteEmployee(long employeeId);
 
 }
